@@ -5,7 +5,7 @@ const logger = require('../../services/logger.service');
 
 // Get list
 // Filter by user id
-// filterBy will look something like this : { createdBy: { _id: "blabla123" } }
+// filterBy will look something like this : { createdBy: { _id: "blabla123", nickname: "momo" } }
 async function query(filterBy) {
     try {
         const criteria = _buildCriteria(filterBy);
@@ -89,8 +89,9 @@ function _buildCriteria(filterBy) {
 
     // should look like this :
     // criteria = {
-    //     createdBy: { 
-    //         _id: "laksdfjl132k5jalkfsd"
+    //     createdBy: {
+    //         _id: "laksdfjl132k5jalkfsd",
+    //         nickname: "momo"
     //     }
     // }
 

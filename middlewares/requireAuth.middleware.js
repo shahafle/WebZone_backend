@@ -10,5 +10,6 @@ async function requireAuth(req, res, next) {
   next() // Next allows moving forward to the next function in line
 }
 
-
-module.exports = requireAuth;
+module.exports = {
+  requireAuth
+}

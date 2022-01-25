@@ -13,9 +13,8 @@ async function query(filterBy = {}) {
         let users = await collection.find(criteria).toArray();
         users = users.map(user => {
             delete user.password
-            user.isHappy = true
-            user.createdAt = ObjectId(user._id).getTimestamp()
-            // Returning fake fresh data
+            user.createdAt = ObjectId(user._id).getTimestamp();
+            // Returning fake data :
             // user.createdAt = Date.now() - (1000 * 60 * 60 * 24 * 3) // 3 days ago
             return user
         })
@@ -83,7 +82,7 @@ async function add(user) {
         const userToAdd = {
             username: user.username,
             password: user.password,
-            fullname: user.fullname,
+            nickname: user.nickname,
         }
         const collection = await dbService.getCollection('user');
         await collection.insertOne(userToAdd);
