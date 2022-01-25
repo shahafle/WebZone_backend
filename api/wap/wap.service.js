@@ -44,8 +44,9 @@ async function remove(wapId) {
 }
 
 // Add new
-async function add(wapToAdd) {
+async function add(wapToAdd, user) {
     try {
+        wapToAdd.createdBy = { _id: user._id, nickname: user.nickname };
         const collection = await dbService.getCollection('wap');
         const addedWap = await collection.insertOne(wapToAdd);
         return addedWap.ops[0]; // addedWap returns as an object from mongo, the real wap object we need sits inside the "ops" key at index 0.
@@ -85,7 +86,7 @@ function _buildCriteria(filterBy) {
 
     if (filterBy.createdBy) criteria.createdBy = filterBy.createdBy;
 
-    console.log(criteria);
+    // console.log(criteria);
 
     // should look like this :
     // criteria = {

@@ -12,11 +12,9 @@ async function getWaps(req, res) {
     // console.log('filterBy:', filterBy)
 
     const { user } = req.session;
-    console.log('user:', user)
-    const createdBy = { _id: user._id, nickname: user.nickname };
-    console.log('createdBy:', createdBy)
-    const filterBy = { createdBy }
-    console.log('filterBy:', filterBy);
+    // console.log('user:', user)
+    const filterBy = { createdBy: { _id: user._id, nickname: user.nickname } };
+    // console.log('filterBy:', filterBy);
 
     const waps = await wapService.query(filterBy);
     res.json(waps);
@@ -54,7 +52,8 @@ async function removeWap(req, res) {
 async function addWap(req, res) {
   try {
     const wapToAdd = req.body;
-    const addedWap = await wapService.add(wapToAdd);
+    const { user } = req.session;
+    const addedWap = await wapService.add(wapToAdd, user);
     res.json(addedWap);
   } catch (err) {
     logger.error('Failed to add wap', err);

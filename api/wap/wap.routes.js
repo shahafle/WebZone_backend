@@ -16,20 +16,20 @@ router.get('/', log, getWaps);
 // Get by id
 router.get('/:wapId', getWapById);
 // Remove by id
-// router.delete('/:wapId', requireAuth, removeWap);
+router.delete('/:wapId', requireAuth, removeWap);
 // Update existing
-// router.put('/:wapId', requireAuth, updateWap);
+router.put('/:wapId', requireAuth, updateWap);
 // Add new
-// router.post('/', requireAuth, addWap);
+router.post('/', requireAuth, addWap);
 
 
 // ** Without Authentication **
 
 // Remove by id
-router.delete('/:wapId', removeWap);
+// router.delete('/:wapId', removeWap);
 // Add new
-router.post('/', addWap);
+// router.post('/', addWap);
 // Update existing
-router.put('/:wapId', updateWap);
+// router.put('/:wapId', updateWap);
 
 module.exports = router;
