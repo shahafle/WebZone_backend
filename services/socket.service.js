@@ -8,6 +8,16 @@ let gIo = null;
 //   The key, will be the provided wap.id, which is also the room's name.
 //   The value, will be the provided wap, so any user connected to the room will get the present-editing wap.
 
+// example : 
+// let gIo = {
+//     sharedRooms: { 
+//         '35k1jasf': {
+//             wap: {},
+//             connectedUsers: 1
+//         }
+//     }
+// }
+
 
 function connectSockets(http, session) {
 
