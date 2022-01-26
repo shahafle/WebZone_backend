@@ -34,10 +34,11 @@ function connectSockets(http, session) {
             // If the user was connected to a room, update the connectedUsers count.
             if (socket.wapId) gIo.sharedRooms[socket.wapId].connectedUsers--;
             // If the room has 0 connected users left, remove it.
-            if (!gIo.sharedRooms[socket.wapId].connectedUsers) delete gIo.sharedRooms[socket.wapId];
+            if (!gIo.sharedRooms[socket.wapId]?.connectedUsers) delete gIo.sharedRooms[socket.wapId];
         })
 
-        socket.on('create room', wap => {
+        // User clicked on "Work Together" link :
+        socket.on('create-room', wap => {
 
             // Create  sharedRooms if it didn't exist.
             if (!gIo.sharedRooms) gIo.sharedRooms = {};
@@ -52,21 +53,22 @@ function connectSockets(http, session) {
 
             // Join the room provided with the wap.id
             // If the room didnt exist, create it
-            if (!gIo.sharedRooms[wap.id]) gIo.sharedRooms[wap.Id] = { wap, connectedUsers: 1 };
+            if (!gIo.sharedRooms[wap.id]) gIo.sharedRooms[wap.id] = { wap, connectedUsers: 1 };
             // "Stick" a label on the socket (a.k.a connect it to a room)
-            socket.join(wap.Id);
+            socket.join(wap.id);
             // Save the joined room on the socket for our convinience
-            socket.wapId = wap.Id;
+            socket.wapId = wap.id;
+
+            console.log(gIo.sharedRooms);
+            console.log(socket.wapId);
         })
 
+        // User opened the link he got from the other user :
         socket.on('join-room', wap => {
 
-            socket.join(socket.id); // socket.id will be the room's name (the editor page that the inviting socket is currently working on)
-
-            socket.emit('get-room-details', { roomName: socket.id, roomWap: wap });
+            socket.join(wap.id); // wap.id will be the room's name (the editor page that the inviting socket is currently working on)
+            socket.wapId = wap.id;
         })
-
-
 
         // socket.on('mouse-move', data => {
         // console.log(data);
