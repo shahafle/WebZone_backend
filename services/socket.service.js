@@ -59,7 +59,6 @@ function connectSockets(http, session) {
             // Join the room provided with the wap.id
             // If the room didnt exist, create it
             if (!gIo.sharedRooms[wap.id]) gIo.sharedRooms[wap.id] = { wap, connectedUsers: 1 };
-            console.log('ln 58 :',gIo.sharedRooms)
 
             // "Stick" a label on the socket (a.k.a connect it to a room)
             socket.join(wap.id);
@@ -85,7 +84,8 @@ function connectSockets(http, session) {
             socket.wapId = wapId;
             
             gIo.sharedRooms[wapId].connectedUsers++;
-            console.log('ln 86 :', gIo.sharedRooms[wapId].connectedUsers);
+
+            socket.emit('load-wap', gIo.sharedRooms[wapId].wap);
         })
 
 
