@@ -1,4 +1,5 @@
 const logger = require('./logger.service');
+const {getRandomColor} = require('./util.service');
 
 let gIo = null;
 
@@ -41,16 +42,19 @@ function connectSockets(http, session) {
     gIo.on('connection', socket => {
         console.log('user connected', socket.id);
 
-        socket.on('disconnect', socket => {
+        socket.on('disconnect', () => {
             console.log('user disconnected');
-
+            
             if (socket.wapId) gIo.sharedRooms[socket.wapId].connectedUsers--;
             if (socket.wapId) {
                 if (!gIo?.sharedRooms[socket.wapId]?.connectedUsers) delete gIo.sharedRooms[socket.wapId];
             }
+            
+            if (socket.wapId) socket.to(socket.wapId).emit('remove-cursor', socket.id);
         })
-
+        
         socket.on('force-disconnect', () => {
+            socket.to(socket.wapId).emit('remove-cursor', socket.id);
             socket.disconnect();
         })
 
@@ -68,6 +72,7 @@ function connectSockets(http, session) {
 
             socket.join(wap.id);
             socket.wapId = wap.id;
+            socket.color = getRandomColor();
         })
 
         socket.on('join-room', wapId => {
@@ -80,6 +85,7 @@ function connectSockets(http, session) {
 
             socket.join(wapId);
             socket.wapId = wapId;
+            socket.color = getRandomColor();
 
             gIo.sharedRooms[wapId].connectedUsers++;
             gIo.sharedRooms[wapId].cursors.push(socket.id); // each cursor is a string of the socket's id
@@ -95,7 +101,7 @@ function connectSockets(http, session) {
 
         socket.on('mouse-move', pos => {
             if (!socket.wapId) return;
-            socket.to(socket.wapId).emit('mouse-moved', {id: socket.id, pos});
+            socket.to(socket.wapId).emit('mouse-moved', { id: socket.id, pos, color: socket.color });
         })
     })
 }
