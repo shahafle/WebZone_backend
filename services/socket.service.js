@@ -1,5 +1,5 @@
 const logger = require('./logger.service');
-const {getRandomColor} = require('./util.service');
+const { getRandomColor } = require('./util.service');
 
 let gIo = null;
 
@@ -35,26 +35,32 @@ function connectSockets(http, session) {
 
         socket.on('disconnect', () => {
             console.log('user disconnected');
-            
-            if (socket.wapId){
+
+            // If user was connected to a room
+            if (socket.wapId) {
                 socket.to(socket.wapId).emit('remove-cursor', socket.id);
                 gIo.sharedRooms[socket.wapId].connectedUsers--;
+                // Delete room if empty after user disconnection
                 if (!gIo?.sharedRooms[socket.wapId]?.connectedUsers) delete gIo.sharedRooms[socket.wapId];
-            } 
+            }
         })
-        
+
         socket.on('force-disconnect', () => {
             socket.disconnect();
         })
 
         socket.on('create-room', wap => {
+            // Initialize sharedRooms
             if (!gIo.sharedRooms) gIo.sharedRooms = {};
+            // If room is already created
             if (socket.wapId === wap.id) return;
 
+            // If user was connected to another room
             if (socket.wapId) {
                 socket.leave(socket.wapId);
             }
 
+            // Initialize room
             if (!gIo.sharedRooms[wap.id]) gIo.sharedRooms[wap.id] = { wap, connectedUsers: 1, cursors: [socket.id] };
 
             socket.join(wap.id);
@@ -75,18 +81,19 @@ function connectSockets(http, session) {
             socket.wapId = wapId;
             socket.color = getRandomColor();
 
-           const room =  gIo.sharedRooms[wapId];
+            const room = gIo.sharedRooms[wapId];
 
-           room.connectedUsers++;
-           room.cursors.push(socket.id); // each cursor is a string of the socket's id
-            
-            socket.emit('load-wap',room.wap);
+            room.connectedUsers++;
+            room.cursors.push(socket.id); // each cursor holds a string of the socket's id
+
+            socket.emit('load-wap', room.wap);
         })
 
         socket.on('update-wap', wap => {
             if (!gIo.sharedRooms) return;
             if (!gIo.sharedRooms[wap.id]) return;
 
+            // Update wap in sharedRooms and for everyone else in the room
             gIo.sharedRooms[wap.id].wap = wap;
             socket.to(wap.id).emit('wap-updated', wap);
         })
@@ -94,6 +101,7 @@ function connectSockets(http, session) {
         socket.on('mouse-move', pos => {
             if (!socket.wapId) return;
 
+            // Update user's cursor position for everyone else in the room
             socket.to(socket.wapId).emit('mouse-moved', { id: socket.id, pos, color: socket.color });
         })
     })
