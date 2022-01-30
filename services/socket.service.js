@@ -49,7 +49,8 @@ function connectSockets(http, session) {
             socket.disconnect();
         })
 
-        socket.on('create-room', wap => {
+        socket.on('create-room', data => {
+            const { wap, nickname } = data;
             // Initialize sharedRooms
             if (!gIo.sharedRooms) gIo.sharedRooms = {};
             // If room is already created
@@ -61,14 +62,16 @@ function connectSockets(http, session) {
             }
 
             // Initialize room
-            if (!gIo.sharedRooms[wap.id]) gIo.sharedRooms[wap.id] = { wap, connectedUsers: 1, cursors: [socket.id] };
+            if (!gIo.sharedRooms[wap.id]) gIo.sharedRooms[wap.id] = { wap, connectedUsers: 1, cursors: [{ id: socket.id, nickname }] };
 
             socket.join(wap.id);
             socket.wapId = wap.id;
             socket.color = getRandomColor();
+            socket.nickname = nickname;
         })
 
-        socket.on('join-room', wapId => {
+        socket.on('join-room', data => {
+            const { wapId, nickname } = data;
             if (!gIo.sharedRooms) return;
             if (!gIo?.sharedRooms[wapId]) return;
             if (socket.wapId === wapId) return;
@@ -80,11 +83,12 @@ function connectSockets(http, session) {
             socket.join(wapId);
             socket.wapId = wapId;
             socket.color = getRandomColor();
+            socket.nickname = nickname;
 
             const room = gIo.sharedRooms[wapId];
 
             room.connectedUsers++;
-            room.cursors.push(socket.id); // each cursor holds a string of the socket's id
+            room.cursors.push({ id: socket.id, nickname }); // each cursor holds a string of the socket's id
 
             socket.emit('load-wap', room.wap);
         })
@@ -102,7 +106,7 @@ function connectSockets(http, session) {
             if (!socket.wapId) return;
 
             // Update user's cursor position for everyone else in the room
-            socket.to(socket.wapId).emit('mouse-moved', { id: socket.id, pos, color: socket.color });
+            socket.to(socket.wapId).emit('mouse-moved', { id: socket.id, pos, color: socket.color, nickname: socket.nickname });
         })
     })
 }
