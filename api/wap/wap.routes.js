@@ -20,7 +20,8 @@ router.delete('/:wapId', requireAuth, removeWap);
 // Update existing
 router.put('/:wapId', requireAuth, updateWap);
 // Add new
-router.post('/', requireAuth, addWap);
+router.post('/', addWap);
+// router.post('/', requireAuth, addWap); <-- // removed authentication requirement, in this case we support guests too and dont care if theres no user in session.
 
 
 // ** Without Authentication **
