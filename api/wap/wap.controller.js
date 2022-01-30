@@ -52,7 +52,8 @@ async function removeWap(req, res) {
 async function addWap(req, res) {
   try {
     const wapToAdd = req.body;
-    const { user } = req.session;
+    let { user } = req.session;
+
     const addedWap = await wapService.add(wapToAdd, user);
     res.json(addedWap);
   } catch (err) {

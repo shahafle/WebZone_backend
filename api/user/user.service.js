@@ -85,6 +85,10 @@ async function add(user) {
             nickname: user.nickname,
         }
         const collection = await dbService.getCollection('user');
+
+        const userInCollection = await collection.findOne({ 'username': user.username });
+        if (userInCollection) return userInCollection;
+
         await collection.insertOne(userToAdd);
         return userToAdd;
     } catch (err) {
@@ -94,9 +98,9 @@ async function add(user) {
 }
 
 function _buildCriteria(filterBy) {
-    
+
     const criteria = {};
-    
+
     if (filterBy.txt) {
         const txtCriteria = { $regex: filterBy.txt, $options: 'i' };
         // $or = if matches to one of the keys
