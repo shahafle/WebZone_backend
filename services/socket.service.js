@@ -88,7 +88,7 @@ function connectSockets(http, session) {
             const room = gIo.sharedRooms[wapId];
 
             room.connectedUsers++;
-            room.cursors.push({ id: socket.id, nickname }); // each cursor holds a string of the socket's id
+            room.cursors.push({ id: socket.id, nickname });
 
             socket.emit('load-wap', room.wap);
         })

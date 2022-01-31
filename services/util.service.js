@@ -1,4 +1,4 @@
-const cursorColors = ['#e4424e', '#ff8882', '#f497ef', '#a34fdc', '#457fe4', '#58c0d3', '#42cb96', '#99cb4d', '#FAD02C', '#ffb480', '#c38b56'];
+let cursorColors = ['#e4424e', '#ff8882', '#f497ef', '#a34fdc', '#457fe4', '#58c0d3', '#42cb96', '#99cb4d', '#FAD02C', '#ffb480', '#c38b56'];
 
 // Returns an array of values that are drawn randomly from given values array (meaning the same value won't appear twice in EACH call & SUBSEQUENT calls).
 // - if you want the original values array to keep its' value and not be spliced with every function call, use getRandomValues.
@@ -16,7 +16,7 @@ function getRandomValuesAndSplice(values, count = 2) {
 }
 
 function getRandomColor() {
-    if (!cursorColors.length) cursorColors = ['#e4424e', '#ff8882', '#f497ef', '#a34fdc', '#457fe4', '#58c0d3', '#42cb96', '#99cb4d', '#FAD02C', '#ffb480', '#c38b56',];
+    if (!cursorColors.length) cursorColors = ['#e4424e', '#ff8882', '#f497ef', '#a34fdc', '#457fe4', '#58c0d3', '#42cb96', '#99cb4d', '#FAD02C', '#ffb480', '#c38b56'];
     return getRandomValuesAndSplice(cursorColors, 1)[0];
 }
 
