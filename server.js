@@ -16,8 +16,8 @@ const session = expressSession({
 
 
 // Express App Config
-app.use(express.json());
 app.use(session);
+app.use(express.json());
 
 
 if (process.env.NODE_ENV === 'production') {
@@ -37,14 +37,12 @@ if (process.env.NODE_ENV === 'production') {
 // Import routes
 const wapRoutes = require('./api/wap/wap.routes');
 const authRoutes = require('./api/auth/auth.routes');
-const userRoutes = require('./api/user/user.routes');
 const { connectSockets } = require('./services/socket.service');
 
 
 // Use routes
 app.use('/api/wap', wapRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/user', userRoutes);
 connectSockets(http, session);
 
 

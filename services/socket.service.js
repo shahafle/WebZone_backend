@@ -5,18 +5,18 @@ let gIo = null;
 
 // *** Key Notes *** //
 // - sharedRooms is an object held inside the gIo.
-// - It will hold rooms where each room is an object like this : { wap.id (socket room): { wap, connectedUsers: 1, cursors: [socketIds...] }
-//   The key, will be the provided wap.id, which is also the room's name.
-//   The value, will be the provided wap, so any user connected to the room will get the present-editing wap.
+// - It will hold rooms where each room is an object like this : { wap.id (socket room): { wap, connectedUsers: 1, cursors: [{id,color,nickname}...] }
+// - The key, will be the provided wap.id, which is also the room's name.
+// - The value, will be the provided wap, so any user connected to the room will get the present-editing wap.
 
 // Example :
 // let gIo = {
 //     ...,
 //     sharedRooms: { 
-//         '35k1jasf'(socketId): {
+//         'k2j34h5tk'(wap.id): {
 //             wap: {...},
 //             connectedUsers: 2,
-//             cursors: ['socket.id_1','socket.id_2']
+//             cursors: [{socket1},{socket2}]
 //         }
 //     }
 // }

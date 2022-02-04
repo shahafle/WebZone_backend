@@ -1,16 +1,9 @@
 const MongoClient = require('mongodb').MongoClient;
-
 const config = require('../config');
 
-module.exports = {
-    getCollection
-}
-
-// Database Name
+// Database Config
 const dbName = 'wap_db';
-
-// Database Connection
-var dbConn = null;
+let dbConn = null;
 
 async function getCollection(collectionName) {
     try {
@@ -24,7 +17,7 @@ async function getCollection(collectionName) {
 }
 
 async function connect() {
-    if (dbConn) return dbConn
+    if (dbConn) return dbConn;
     try {
         const client = await MongoClient.connect(config.dbURL, { useNewUrlParser: true, useUnifiedTopology: true });
         const db = client.db(dbName);
@@ -34,4 +27,9 @@ async function connect() {
         logger.error('Cannot Connect to DB', err);
         throw err;
     }
+}
+
+
+module.exports = {
+    getCollection
 }

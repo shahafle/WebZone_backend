@@ -1,5 +1,3 @@
-const logger = require('../services/logger.service');
-
 // Checks if theres a session and if theres a user on the session
 async function requireAuth(req, res, next) {
   // if (!req?.session?.user) { // check later if it works
