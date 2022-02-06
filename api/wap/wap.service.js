@@ -1,15 +1,14 @@
 const dbService = require('../../services/db.service');
-const ObjectId = require('mongodb').ObjectId;
 const logger = require('../../services/logger.service');
+const ObjectId = require('mongodb').ObjectId;
 
 
 // Get list
 // Filter by user id
-// filterBy will look something like this : { createdBy: { _id: "blabla123", nickname: "momo" } }
+// filterBy will look like this : { createdBy: { _id: "5j32h5kjdar", nickname: "joe" } }
 async function query(filterBy) {
     try {
         const criteria = _buildCriteria(filterBy);
-        // const criteria = {};
         const collection = await dbService.getCollection('wap');
         const waps = await collection.find(criteria).toArray();
         return waps;
@@ -36,7 +35,6 @@ async function remove(wapId) {
     try {
         const collection = await dbService.getCollection('wap');
         await collection.deleteOne({ '_id': ObjectId(wapId) });
-        return wapId;
     } catch (err) {
         logger.error(`cannot remove wap ${wapId}`, err);
         throw err;
@@ -63,6 +61,7 @@ async function update(wapToUpdate) {
         delete wapToUpdate._id;
         const collection = await dbService.getCollection('wap');
         await collection.updateOne({ "_id": id }, { $set: { ...wapToUpdate } });
+        wapToUpdate._id = id;
         return wapToUpdate;
     } catch (err) {
         logger.error(`cannot update wap ${wapId}`, err);
@@ -85,16 +84,6 @@ function _buildCriteria(filterBy) {
     const criteria = {};
 
     if (filterBy.createdBy) criteria.createdBy = filterBy.createdBy;
-
-    // console.log(criteria);
-
-    // should look like this :
-    // criteria = {
-    //     createdBy: {
-    //         _id: "laksdfjl132k5jalkfsd",
-    //         nickname: "momo"
-    //     }
-    // }
 
     return criteria;
 }

@@ -1,11 +1,11 @@
-const logger = require('../services/logger.service')
+const logger = require('../services/logger.service');
 
 async function log(req, res, next) {
-  logger.info('Requested For Data')
+  logger.info('Requested For Data');
   if (req.session && req.session.user) {
-    logger.info('Req from: ' + req.session.user.nickname)
+    logger.info('Req from: ' + req.session.user.nickname);
   }
-  next()
+  next();
 }
 
 module.exports = {
