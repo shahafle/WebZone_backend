@@ -28,7 +28,7 @@ async function login(req, res) {
     }
 }
 
-async function logout(req, res){
+async function logout(req, res) {
     try {
         req.session.destroy();
         res.send({ msg: 'Logged out successfully' });
@@ -37,9 +37,21 @@ async function logout(req, res){
     }
 }
 
+async function checkIsAvailable(req, res) {
+    try {
+        const { username } = req.body;
+        console.log(username);
+        const isAvailable = await authService.checkIsAvailable(username);
+        res.send(isAvailable);
+    } catch (err) {
+
+    }
+}
+
 
 module.exports = {
     signup,
     login,
-    logout
+    logout,
+    checkIsAvailable
 }

@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'production') {
     // Configuring CORS
     const corsOptions = {
         // * Make sure origin contains the URL your FRONTEND is running on *
-        origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:8080', 'http://127.0.0.1:8080'], // 3000 is for react, 8080 is for vue
+        origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://localhost:3000', 'https://127.0.0.1:3000', 'http://localhost:8080', 'http://127.0.0.1:8080'], // 3000 is for react, 8080 is for vue
         credentials: true
     }
     app.use(cors(corsOptions));

@@ -19,7 +19,7 @@ async function login(username, password) {
 
     const user = await userService.getByUsername(username);
     if (!user) return Promise.reject('Invalid username or password');
-    
+
     const match = await bcrypt.compare(password, user.password);
     if (!match) return Promise.reject('Invalid username or password');
 
@@ -27,8 +27,13 @@ async function login(username, password) {
     return user;
 }
 
+async function checkIsAvailable(username) {
+    const user = await userService.getByUsername(username);
+    return !user;
+}
 
 module.exports = {
     signup,
     login,
+    checkIsAvailable
 }
