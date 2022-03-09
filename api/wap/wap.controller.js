@@ -19,7 +19,7 @@ async function getWaps(req, res) {
 // Get by id 
 async function getWapById(req, res) {
   try {
-    const wapId = req.params.wapId;
+    const { wapId } = req.params;
     const wap = await wapService.getById(wapId);
     res.json(wap);
   } catch (err) {
@@ -31,8 +31,9 @@ async function getWapById(req, res) {
 // Remove by id
 async function removeWap(req, res) {
   try {
-    const wapId = req.params.wapId;
+    const { wapId } = req.params;
     await wapService.remove(wapId);
+    res.end();
   } catch (err) {
     logger.error('Failed to remove wap', err);
     res.status(500).send({ err: 'Failed to remove wap' });
