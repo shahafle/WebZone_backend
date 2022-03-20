@@ -29,10 +29,12 @@ async function add(user) {
         const collection = await dbService.getCollection('user');
 
         const userInCollection = await collection.findOne({ 'username': user.username });
-        if (userInCollection) return userInCollection;
+        if (userInCollection) {
+            logger.error(`Signup attempt with an existing username - ${userInCollection.username}`);
+            return Promise.reject();
+        }
 
         await collection.insertOne(userToAdd);
-
         return userToAdd;
     } catch (err) {
         logger.error('cannot insert user', err);

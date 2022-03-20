@@ -7,6 +7,7 @@ async function signup(req, res) {
         const { username, password, nickname } = req.body;
         const account = await authService.signup(username, password, nickname);
         logger.debug(`auth.route - new account created: ` + JSON.stringify(account));
+        
         const user = await authService.login(username, password);
         req.session.user = user;
         res.json(user);
@@ -40,7 +41,6 @@ async function logout(req, res) {
 async function checkIsAvailable(req, res) {
     try {
         const { username } = req.body;
-        console.log(username);
         const isAvailable = await authService.checkIsAvailable(username);
         res.send(isAvailable);
     } catch (err) {

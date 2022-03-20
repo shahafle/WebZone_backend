@@ -29,6 +29,7 @@ async function login(username, password) {
 
 async function checkIsAvailable(username) {
     const user = await userService.getByUsername(username);
+    // We return the opposite value because if it DOES exist, it is NOT available.
     return !user;
 }
 
