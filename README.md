@@ -1,4 +1,6 @@
-<sub>This repository contains only **server side** of _Webzone_ app </sub>
+<sub>This repository contains only **server side** of _Webzone_ app</sub>  
+<sub><a href="https://github.com/shahafle/WebZone_frontend">Go to frontend repository</a></sub>
+
 # Webzone- website builder app inspired by _Wix_
 
 Website builder app inspired by _Wix_.com
